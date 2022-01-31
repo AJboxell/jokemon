@@ -1,0 +1,12 @@
+<% @pokemons.each do |pokemon| %>
+  <%= pokemon.name %>
+<% end %>
+<% @battle = Battle.new %>
+
+<p>
+<%= simple_form_for @battle, url: battles_path, method: :post do |f| %>
+  <%= f.input :user, as: :hidden, input_html: { value: Pokemon.first.id } %>
+  <%= f.input :adversary, as: :hidden, input_html: { value: Pokemon.last.id } %>
+  <%= f.button :submit, value: 'FIGHT', class: 'btn btn-primary ml-1 mb-3 d-inline' %>
+<% end %>
+</p>
