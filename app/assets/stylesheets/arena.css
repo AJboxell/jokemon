@@ -1,0 +1,28 @@
+.arena {
+  border: 1px solid black;
+  width: 70vw;
+  height: 70vh;
+  margin: auto;
+  margin-top: 10vh;
+  position: relative;
+}
+
+.pokemon {
+  border: 1px solid darkgray;
+  position: absolute;
+  font-size: 80px;
+}
+
+.pokemon img {
+  width: 30vw;
+}
+
+#user {
+  bottom: -8vw;
+  right: -8vw;
+}
+
+#adversary {
+  top: -25px;
+  left: -25px;
+}
