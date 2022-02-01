@@ -1,3 +1,7 @@
+a, a:visited {
+  color: black;
+}
+
 .arena {
   border: 1px solid black;
   width: 70vw;
@@ -5,6 +9,18 @@
   margin: auto;
   margin-top: 10vh;
   position: relative;
+}
+
+.actions {
+  position: absolute;
+  top: 25vh;
+  left: 25vw;
+  width: 20vw;
+  height: 20vw;
+  background-color: lightgray;
+  text-align: center;
+  font-size: 24px;
+  padding-top: 16px;
 }
 
 .pokemon {
