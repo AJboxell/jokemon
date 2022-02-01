@@ -1,4 +1,5 @@
 class BattlesController < ApplicationController
+  before_action :find_battle, only: [:show, :attack]
 
   def create
     @battle = Battle.new(battle_params)
@@ -8,12 +9,9 @@ class BattlesController < ApplicationController
     redirect_to battle_path(@battle)
   end
 
-  def show
-    find_battle
-  end
+  def show; end
 
   def attack
-    find_battle
     @adversary.hp -= @user.attack
     @adversary.save
     redirect_to battle_path(@battle) unless battle_over?
