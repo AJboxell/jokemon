@@ -1,2 +1,4 @@
-<p><%= @battle %></p>
-<%= @battle.user.name %>
+<div class="arena">
+  <div class="pokemon" id="adversary"><%= @battle.adversary.name %></div>
+  <div class="pokemon" id="user"><%= image_tag ("avatars/#{@battle.user.name}.png") %></div>
+</div>
