@@ -16,7 +16,16 @@ class BattlesController < ApplicationController
     find_battle
     @adversary.hp -= @user.attack
     @adversary.save
-    redirect_to battle_path(@battle)
+    redirect_to battle_path(@battle) unless battle_over?
+  end
+
+  def battle_over?
+    if @adversary.hp < 1 || @user.hp < 1
+      @battle.destroy
+      redirect_to pokemons_path
+      @adversary.update!(hp: @adversary.max_hp)
+      @user.update!(hp: @user.max_hp)
+    end
   end
 
   private
