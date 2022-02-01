@@ -9,10 +9,23 @@ class BattlesController < ApplicationController
   end
 
   def show
-    @battle = Battle.find(params[:id])
+    find_battle
+  end
+
+  def attack
+    find_battle
+    @adversary.hp -= @user.attack
+    @adversary.save
+    redirect_to battle_path(@battle)
   end
 
   private
+
+  def find_battle
+    @battle = Battle.find(params[:id])
+    @user = @battle.user
+    @adversary = @battle.adversary
+  end
 
   def battle_params
     params.require(:battle).permit(:user_id, :adversary_id)

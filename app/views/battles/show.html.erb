@@ -1,4 +1,17 @@
 <div class="arena">
-  <div class="pokemon" id="adversary"><%= @battle.adversary.name %></div>
-  <div class="pokemon" id="user"><%= image_tag ("avatars/#{@battle.user.name}.png") %></div>
+  <div class="pokemon" id="adversary">
+    <%= @battle.adversary.name %>
+    <div class="hp">
+      <% if @battle.adversary.alive? %>
+        <%= "#{@battle.adversary.hp}/#{@battle.adversary.max_hp}" %>
+      <% else %>
+        <%= "RIP" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="pokemon" id="user">
+    <div class="hp"><%= "#{@battle.user.hp}/#{@battle.user.max_hp}" %></div>
+    <%= image_tag ("avatars/#{@battle.user.name}.png") %>
+  </div>
+  <div class="actions"><%= link_to "Tackle", attack_battle_path(@battle) %></div>
 </div>
