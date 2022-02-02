@@ -1,5 +1,16 @@
+@font-face {
+   font-family: 'Sabo-Filled';
+   src: url('Sabo-Filled.otf');
+   font-family: 'Sabo-Regular';
+   src: url('Sabo-Regular.otf');
+}
+
 a, a:visited {
   color: black;
+}
+
+.hidden {
+  display: none;
 }
 
 .arena {
@@ -26,19 +37,41 @@ a, a:visited {
 .pokemon {
   border: 1px solid darkgray;
   position: absolute;
-  font-size: 80px;
+  font-size: 56px;
+  font-family: 'Sabo-Regular';
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: gray;
+  padding: 16px 32px;
 }
 
 .pokemon img {
-  width: 30vw;
+  width: 20vw;
+  padding: 0px;
+}
+
+.name {
+  text-align: center;
+  padding: 0px;
 }
 
 #user {
-  bottom: -8vw;
-  right: -8vw;
+  bottom: -4vw;
+  right: -4vw;
 }
 
 #adversary {
-  top: -25px;
-  left: -25px;
+  top: -4vw;
+  left: -4vw;
+}
+
+#adversary .hp {
+  align-self: flex-end;
+}
+
+#user .hp {
+  align-self: flex-start;
 }
