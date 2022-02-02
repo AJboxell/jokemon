@@ -1,8 +1,14 @@
 @font-face {
-   font-family: 'Sabo-Filled';
-   src: url('Sabo-Filled.otf');
-   font-family: 'Sabo-Regular';
-   src: url('Sabo-Regular.otf');
+  font-family: 'Sabo-Filled';
+  src: url('Sabo-Filled.otf');
+  font-family: 'Sabo-Regular';
+  src: url('Sabo-Regular.otf');
+}
+
+@import "font-awesome";
+
+body {
+  font-family: 'Sabo-Regular';
 }
 
 a, a:visited {
@@ -38,7 +44,6 @@ a, a:visited {
   border: 1px solid darkgray;
   position: absolute;
   font-size: 56px;
-  font-family: 'Sabo-Regular';
   color: white;
   display: flex;
   flex-direction: column;
@@ -74,4 +79,13 @@ a, a:visited {
 
 #user .hp {
   align-self: flex-start;
+}
+
+.messages {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 4px gray solid;
+  padding: 16px;
+  font-size: 16px;
 }

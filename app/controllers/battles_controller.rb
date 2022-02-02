@@ -1,5 +1,5 @@
 class BattlesController < ApplicationController
-  before_action :find_battle, only: [:show, :attack]
+  before_action :find_battle, only: [:show, :attack, :defend]
 
   def create
     @battle = Battle.new(battle_params)
@@ -14,6 +14,14 @@ class BattlesController < ApplicationController
   def attack
     @adversary.hp -= @user.attack
     @adversary.save
+    @battle.update!(message: "#{@user.name} used tackle!")
+    redirect_to battle_path(@battle) unless battle_over?
+  end
+
+  def defend
+    @user.hp -= @adversary.attack
+    @user.save
+    @battle.update!(message: "#{@adversary.name} attacked!")
     redirect_to battle_path(@battle) unless battle_over?
   end
 
