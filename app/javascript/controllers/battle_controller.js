@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["menu", "attack", "next"]
+  static targets = ["menu", "attack", "next", "adhp", "ushp"]
 
   connect() {
     // this.element.textContent = "Hello World!"
@@ -11,6 +11,7 @@ export default class extends Controller {
   hide() {
     this.menuTarget.classList.add("hidden");
     console.log("hidden");
+    console.log(this.adhpTarget.innerHTML);
   }
 
   show() {
