@@ -15,7 +15,7 @@ a, a:visited {
   color: black;
 }
 
-.hidden {
+.invisible {
   display: none;
 }
 
@@ -30,7 +30,7 @@ a, a:visited {
 
 .actions {
   position: absolute;
-  top: 25vh;
+  bottom: 15vh;
   left: 25vw;
   width: 20vw;
   height: 20vw;
@@ -38,6 +38,7 @@ a, a:visited {
   text-align: center;
   font-size: 24px;
   padding-top: 16px;
+  opacity: 0.7;
 }
 
 .pokemon {
@@ -88,4 +89,6 @@ a, a:visited {
   border: 4px gray solid;
   padding: 16px;
   font-size: 16px;
+  justify-content: left;
+  text-align: left;
 }
