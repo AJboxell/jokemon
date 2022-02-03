@@ -15,7 +15,7 @@ class BattlesController < ApplicationController
     @adversary.hp -= @user.attack
     @adversary.save
     @battle.update!(message: "#{@user.name} used tackle!")
-    redirect_to battle_path(@battle) unless battle_over?
+    render 'battles/show' unless battle_over?
   end
 
   def defend

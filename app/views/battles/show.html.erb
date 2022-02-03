@@ -1,8 +1,8 @@
-<div class="arena" data-controller="battle">
+<div class="arena" data-controller="animation">
   <div class="pokemon" id="adversary">
     <div class="name"><%= @battle.adversary.name %></div>
     <%= image_tag ("avatars/#{@battle.adversary.name}.png") %>
-    <div class="hp" data-battle-target="adhp">
+    <div class="hp">
       <% if @battle.adversary.alive? %>
         <%= "#{@battle.adversary.hp}/#{@battle.adversary.max_hp}" %>
       <% else %>
@@ -11,17 +11,21 @@
     </div>
   </div>
   <div class="pokemon" id="user">
-    <div class="hp" data-battle-target="ushp"><%= "#{@battle.user.hp}/#{@battle.user.max_hp}" %></div>
+    <div class="hp"><%= "#{@battle.user.hp}/#{@battle.user.max_hp}" %></div>
     <%= image_tag ("avatars/#{@battle.user.name}.png") %>
     <div class="name"><%= @battle.user.name %></div>
   </div>
 
-  <div class="actions" data-battle-target="menu">
-    <%= link_to "Tackle", attack_battle_path(@battle), data: { battle_target: "attack", action: "click->battle#hide" }, remote: true %>
+  <div class="actions">
+    <%= link_to "Tackle", attack_battle_path(@battle), data: { animation_target: "attack", action: "click->animation#star" }, remote: true %>
   </div>
 
   <div class="messages">
-    <%= "> #{@battle.message}" %>
-    <%= link_to fa_icon('angle-double-right'), defend_battle_path(@battle), data: { battle_target: "next", action: "click->battle#show" }, remote: true %>
+    <p><%= "> #{@battle.message}" %></p>
+    <%= link_to fa_icon('angle-double-right'), defend_battle_path(@battle) %>
+  </div>
+
+  <div class="animation invisible" data-animation-target="star">
+    <%= image_tag ("animations/star.svg.png") %>
   </div>
 </div>

@@ -15,7 +15,7 @@ a, a:visited {
   color: black;
 }
 
-.hidden {
+.invisible {
   display: none;
 }
 
@@ -89,4 +89,6 @@ a, a:visited {
   border: 4px gray solid;
   padding: 16px;
   font-size: 16px;
+  justify-content: left;
+  text-align: left;
 }
