@@ -92,3 +92,9 @@ a, a:visited {
   justify-content: left;
   text-align: left;
 }
+
+ul {
+  list-style-type: none;
+  margin-left: 0;
+  text-align: left;
+}

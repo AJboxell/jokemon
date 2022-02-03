@@ -1,5 +1,6 @@
 class BattlesController < ApplicationController
   before_action :find_battle, only: [:show, :attack, :defend]
+  before_action :find_move, only: :attack
 
   def create
     @battle = Battle.new(battle_params)
@@ -12,16 +13,17 @@ class BattlesController < ApplicationController
   def show; end
 
   def attack
-    @adversary.hp -= @user.attack
+    @adversary.hp -= @user.attack * @move.power
     @adversary.save
-    @battle.update!(message: "#{@user.name} used tackle!")
+    @battle.update!(message: "#{@user.name} used #{@move.name}!")
     render 'battles/show' unless battle_over?
   end
 
   def defend
-    @user.hp -= @adversary.attack
+    @random_move = @adversary.moves.sample
+    @user.hp -= @adversary.attack * @random_move.power
     @user.save
-    @battle.update!(message: "#{@adversary.name} attacked!")
+    @battle.update!(message: "#{@adversary.name} used #{@random_move.name}!")
     redirect_to battle_path(@battle) unless battle_over?
   end
 
@@ -40,6 +42,10 @@ class BattlesController < ApplicationController
     @battle = Battle.find(params[:id])
     @user = @battle.user
     @adversary = @battle.adversary
+  end
+
+  def find_move
+    @move = Move.find(params[:move].to_i)
   end
 
   def battle_params

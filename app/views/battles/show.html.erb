@@ -17,12 +17,16 @@
   </div>
 
   <div class="actions">
-    <%= link_to "Tackle", attack_battle_path(@battle), data: { animation_target: "attack", action: "click->animation#star" }, remote: true %>
+    <% @battle.user.moves.each do |move| %>
+      <ul>
+        <li><%= fa_icon('chevron-right') %>&nbsp;<%= link_to "#{move.name}", attack_battle_path(@battle, move: move), data: { animation_target: "attack", action: "click->animation#star" }, remote: true %></li>
+      </ul>
+    <% end %>
   </div>
 
   <div class="messages">
-    <p><%= "> #{@battle.message}" %></p>
-    <%= link_to fa_icon('angle-double-right'), defend_battle_path(@battle) %>
+    <p><%= "> #{@battle.message}" %>
+    <%= link_to fa_icon('angle-double-right'), defend_battle_path(@battle) %></p>
   </div>
 
   <div class="animation invisible" data-animation-target="star">
