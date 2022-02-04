@@ -1,0 +1,33 @@
+.lists {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.selector {
+  font-size: 32px;
+  display: flex;
+  flex-direction: row;
+  background-color: lightyellow;
+  border: 1px solid lightgray;
+  margin: 16px;
+  border-radius: 16px;
+}
+
+.pressed {
+  background-color: yellow;
+  border: 1px solid darkgray;
+}
+
+.selector img {
+  width: 10vw;
+}
+
+.poke-info {
+  padding: 40px 32px;
+}
+
+.pokeform {
+  width: 20vw;
+  margin: 16px auto;
+}
