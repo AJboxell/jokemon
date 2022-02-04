@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'Sabo-Filled';
+  src: url('Sabo-Filled.otf');
+  font-family: 'Sabo-Regular';
+  src: url('Sabo-Regular.otf');
+}
+
+@import "font-awesome";
+
+body {
+  font-family: 'Sabo-Regular';
+}
+
+h1 {
+  font-size: 80px;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.btn {
+  width: 100%;
+  border-radius: 4px;
+  font-size: 32px;
+  font-family: "Sabo-Regular";
+}
