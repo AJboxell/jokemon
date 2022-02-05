@@ -1,11 +1,15 @@
 <h1>Choose your Pokémon</h1>
 <% @battle = Battle.new %>
 
-<div class="lists" data-controller="select">
-  <div class="list">
+<div class="lists">
+  <div class="list" data-controller="form">
     <h2>Your Champion:</h2>
-    <% @pokemons.each do |pokemon| %>
-      <div class="selector" data-select-target="option" data-action="click->select#toggleClick">
+    <% @pokemons.sort.each do |pokemon| %>
+      <div  class="selector"
+            data-controller="select"
+            data-select-target="option"
+            data-form-target="user"
+            data-action="click->select#toggleClick">
         <%= image_tag ("avatars/#{pokemon.name}.png") %>
         <div class="poke-info"><%= pokemon.name %></div>
       </div>
@@ -15,7 +19,7 @@
   <div class="list">
     <h2>Your Opponent:</h2>
     <% @pokemons.shuffle.each do |pokemon| %>
-      <div class="selector" data-select-target="option" data-action="click->select#toggleClick">
+      <div class="selector"data-controller="select" data-select-target="option" data-action="click->select#toggleClick">
         <%= image_tag ("avatars/#{pokemon.name}.png") %>
         <div class="poke-info"><%= pokemon.name %></div>
       </div>
@@ -25,8 +29,8 @@
 
 <div class="pokeform">
   <%= simple_form_for @battle, url: battles_path, method: :post do |f| %>
-    <%= f.input :user, as: :hidden, collection: @pokemons %>
-    <%= f.input :adversary, as: :hidden, collection: @pokemons %>
+    <%= f.input :user, as: :hidden, class: "userinput" %>
+    <%= f.input :adversary, as: :hidden %>
     <%= f.button :submit, value: 'FIGHT', class: 'btn' %>
   <% end %>
 </div>

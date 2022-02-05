@@ -4,8 +4,8 @@ class BattlesController < ApplicationController
 
   def create
     @battle = Battle.new(battle_params)
-    @battle.user = Pokemon.find(params[:battle][:user].to_i)
-    @battle.adversary = Pokemon.find(params[:battle][:adversary].to_i)
+    @battle.user = Pokemon.find_by(name: params[:battle][:user])
+    @battle.adversary = Pokemon.find_by(name: params[:battle][:adversary])
     @battle.save
     redirect_to battle_path(@battle)
   end
