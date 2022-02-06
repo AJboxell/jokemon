@@ -1,0 +1,4 @@
+  <div class="messages" data-battle-target="message">
+    <p><%= "> #{@battle.message}" %>
+    <%= link_to fa_icon('angle-double-right'), attack_battle_path(@battle, move: @battle.adversary.moves.sample, attacker: @battle.adversary, defender: @battle.user), remote: true %></p>
+  </div>
