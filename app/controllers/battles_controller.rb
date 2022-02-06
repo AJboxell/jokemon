@@ -1,6 +1,6 @@
 class BattlesController < ApplicationController
-  before_action :find_battle, only: [:show, :attack, :defend]
-  before_action :find_move, only: :attack
+  before_action :find_battle, only: [:show, :attack, :accurate?, :find_move, :battle_over]
+  before_action :find_move, only: [:attack, :accurate?]
 
   def create
     @battle = Battle.new(battle_params)
@@ -13,30 +13,35 @@ class BattlesController < ApplicationController
   def show; end
 
   def attack
-    @adversary.hp -= @user.attack * @move.power
-    @adversary.save
-    @battle.update!(message: "#{@user.name} used #{@move.name}!")
-    render 'battles/show' unless battle_over?
-  end
-
-  def defend
-    @random_move = @adversary.moves.sample
-    @user.hp -= @adversary.attack * @random_move.power
-    @user.save
-    @battle.update!(message: "#{@adversary.name} used #{@random_move.name}!")
-    redirect_to battle_path(@battle) unless battle_over?
+    if accurate?
+      @defender.hp -= @attacker.attack * @move.power
+      @defender.save
+      @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
+    else
+      @battle.update!(message: "#{@attacker.name} missed!")
+    end
+    battle_over?
   end
 
   def battle_over?
-    if @adversary.hp < 1 || @user.hp < 1
+    if @defender.fainted? || @attacker.fainted?
+      sleep 2
+      message = @defender.fainted? ? "#{@defender} has fainted, you win!" : "Ouch, you lose..."
+      @battle.update!(message: message)
       @battle.destroy
       redirect_to pokemons_path
-      @adversary.update!(hp: @adversary.max_hp)
-      @user.update!(hp: @user.max_hp)
+      @adversary.restore_health
+      @user.restore_health
+    else
+      redirect_to battle_path(@battle)
     end
   end
 
   private
+
+  def accurate?
+    rand(1..100) < (100 - (@defender.evasion ** 2))
+  end
 
   def find_battle
     @battle = Battle.find(params[:id])
@@ -45,6 +50,8 @@ class BattlesController < ApplicationController
   end
 
   def find_move
+    @attacker = Pokemon.find(params[:attacker])
+    @defender = Pokemon.find(params[:defender])
     @move = Move.find(params[:move].to_i)
   end
 

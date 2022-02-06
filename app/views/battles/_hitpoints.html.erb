@@ -1,0 +1,7 @@
+    <div class="hp">
+      <% unless pokemon.fainted? %>
+        <%= "#{pokemon.hp}/#{pokemon.max_hp}" %>
+      <% else %>
+        <%= "KO" %>
+      <% end %>
+    </div>
