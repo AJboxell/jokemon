@@ -3,7 +3,7 @@
     <div class="name"><%= @battle.adversary.name %></div>
     <%= image_tag ("avatars/#{@battle.adversary.name}.png") %>
     <div class="hp">
-      <% if @battle.adversary.alive? %>
+      <% unless @battle.adversary.fainted? %>
         <%= "#{@battle.adversary.hp}/#{@battle.adversary.max_hp}" %>
       <% else %>
         <%= "KO" %>
@@ -19,14 +19,14 @@
   <div class="actions">
     <% @battle.user.moves.each do |move| %>
       <ul>
-        <li><%= fa_icon('chevron-right') %>&nbsp;<%= link_to "#{move.name}", attack_battle_path(@battle, move: move), data: { animation_target: "attack", action: "click->animation#star" }, remote: true %></li>
+        <li><%= fa_icon('chevron-right') %>&nbsp;<%= link_to "#{move.name}", attack_battle_path(@battle, move: move, attacker: @battle.user, defender: @battle.adversary), data: { animation_target: "attack", action: "click->animation#star" }, remote: true %></li>
       </ul>
     <% end %>
   </div>
 
   <div class="messages">
     <p><%= "> #{@battle.message}" %>
-    <%= link_to fa_icon('angle-double-right'), defend_battle_path(@battle) %></p>
+    <%= link_to fa_icon('angle-double-right'), attack_battle_path(@battle, move: @battle.adversary.moves.sample, attacker: @battle.adversary, defender: @battle.user) %></p>
   </div>
 
   <div class="animation invisible" data-animation-target="star">
