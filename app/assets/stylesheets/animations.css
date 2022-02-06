@@ -21,3 +21,14 @@
 .animation img {
   width: 5vw;
 }
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2vh); }
+}
+
+.avatar {
+  animation: bounce 0.1s;
+  animation-direction: alternate;
+  animation-iteration-count: 2;
+}

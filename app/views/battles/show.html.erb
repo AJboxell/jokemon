@@ -1,19 +1,19 @@
 <div class="arena" data-controller="animation">
   <div class="pokemon" id="adversary">
     <div class="name"><%= @battle.adversary.name %></div>
-    <%= image_tag ("avatars/#{@battle.adversary.name}.png") %>
+    <%= image_tag ("avatars/#{@battle.adversary.name}.png"), data: { animation_target: "opponent" }  %>
     <%= render "hitpoints", pokemon: @battle.adversary %>
   </div>
   <div class="pokemon" id="user">
     <%= render "hitpoints", pokemon: @battle.user %>
-    <%= image_tag ("avatars/#{@battle.user.name}.png") %>
+    <%= image_tag ("avatars/#{@battle.user.name}.png"), data: { animation_target: "avatar" } %>
     <div class="name"><%= @battle.user.name %></div>
   </div>
 
   <div class="actions">
     <% @battle.user.moves.each do |move| %>
       <ul>
-        <li><%= fa_icon('chevron-right') %>&nbsp;<%= link_to "#{move.name}", attack_battle_path(@battle, move: move, attacker: @battle.user, defender: @battle.adversary), data: { animation_target: "attack", action: "click->animation#star" }, remote: true %></li>
+        <li><%= fa_icon('chevron-right') %>&nbsp;<%= link_to "#{move.name}", attack_battle_path(@battle, move: move, attacker: @battle.user, defender: @battle.adversary), data: { animation_target: "attack", action: "click->animation#star click->animation#jump" }, remote: true %></li>
       </ul>
     <% end %>
   </div>
