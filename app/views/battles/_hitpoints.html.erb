@@ -1,3 +1,4 @@
+  <%= turbo_frame_tag "#{pokemon.name}hp" do %>
     <div class="hp">
       <% unless pokemon.fainted? %>
         <%= "#{pokemon.hp}/#{pokemon.max_hp}" %>
@@ -5,3 +6,4 @@
         <%= "KO" %>
       <% end %>
     </div>
+  <% end %>
