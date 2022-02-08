@@ -25,11 +25,12 @@ class BattlesController < ApplicationController
 
   def battle_over?
     if @defender.fainted? || @attacker.fainted?
-      message = @defender.fainted? ? "#{@defender} has fainted, you win!" : "Ouch, you lose..."
+      @winner = @defender.fainted? ? @attacker : @defender
+      message = @defender.fainted? ? "#{@defender.name} has fainted, you win!" : "Ouch, you lose..."
       @battle.update!(message: message)
-      sleep 2
+      sleep 1
       @battle.destroy
-      redirect_to pokemons_path
+      render 'battle_over'
       @adversary.restore_health
       @user.restore_health
     else
