@@ -34,7 +34,7 @@
 }
 
 .winner {
-  animation: bounce 0.1s;
+  animation: bounce 0.2s;
   animation-direction: alternate;
   animation-iteration-count: infinite;
 }

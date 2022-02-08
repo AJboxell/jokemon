@@ -1,0 +1,20 @@
+<div class="arena" data-controller="animation">
+  <%= turbo_frame_tag "arena" do %>
+    <div class="pokemon" id="adversary">
+      <div class="name"><%= @battle.adversary.name %></div>
+      <%= image_tag ("avatars/#{@battle.adversary.name}.png"), class: "#{'winner' if @battle.adversary == @winner}", data: { animation_target: "opponent" }  %>
+      <%= render "hitpoints", pokemon: @battle.adversary %>
+    </div>
+    <div class="pokemon" id="user">
+      <%= render "hitpoints", pokemon: @battle.user %>
+      <%= image_tag ("avatars/#{@battle.user.name}.png"), class: "#{'winner' if @battle.user == @winner}", data: { animation_target: "avatar" } %>
+      <div class="name"><%= @battle.user.name %></div>
+    </div>
+
+    <div class="actions">
+      <%= link_to "Return to main screen", pokemons_path, data: { turbo_frame: "_top" } %>
+    </div>
+
+    <%= render "message" %>
+  <% end %>
+</div>
