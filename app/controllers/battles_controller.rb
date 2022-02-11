@@ -15,6 +15,7 @@ class BattlesController < ApplicationController
   def attack
     if accurate?
       @defender.hp -= @attacker.attack * @move.power
+      @defender.status = @move.status
       @defender.save
       @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     else
