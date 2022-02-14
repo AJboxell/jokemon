@@ -4,6 +4,7 @@ class BattlesController < ApplicationController
 
   def create
     @battle = Battle.new(battle_params)
+    @battle.turn = 0
     @battle.user = Pokemon.find_by(name: params[:battle][:user])
     @battle.adversary = Pokemon.find_by(name: params[:battle][:adversary])
     @battle.save
@@ -13,6 +14,7 @@ class BattlesController < ApplicationController
   def show; end
 
   def attack
+    @battle.turn += 1
     if accurate?
       @defender.hp -= @attacker.attack * @move.power
       @defender.status = @move.status
@@ -21,6 +23,7 @@ class BattlesController < ApplicationController
     else
       @battle.update!(message: "#{@attacker.name} missed!")
     end
+    status_checks
     battle_over?
   end
 
@@ -29,7 +32,6 @@ class BattlesController < ApplicationController
       @winner = @defender.fainted? ? @attacker : @defender
       message = @defender.fainted? ? "#{@defender.name} has fainted, you win!" : "Ouch, you lose..."
       @battle.update!(message: message)
-      sleep 1
       @battle.destroy
       render 'battle_over'
       @adversary.restore_health
@@ -43,6 +45,9 @@ class BattlesController < ApplicationController
 
   def accurate?
     rand(1..100) < (100 - (@defender.evasion ** 2))
+  end
+
+  def status_checks
   end
 
   def find_battle
