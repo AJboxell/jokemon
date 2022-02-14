@@ -20,7 +20,7 @@ a, a:visited {
 }
 
 .arena {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   width: 70vw;
   height: 70vh;
   margin: auto;
@@ -29,10 +29,13 @@ a, a:visited {
 }
 
 .actions {
+  width: 22vw;
   position: absolute;
-  bottom: 15vh;
-  left: 25vw;
-  width: 20vw;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
   height: 20vw;
   background-color: lightgray;
   text-align: center;
@@ -50,7 +53,7 @@ a, a:visited {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: gray;
+  background-color: rgba(128, 128, 128, 0.6);
   padding: 16px 32px;
 }
 
@@ -74,12 +77,10 @@ a, a:visited {
   left: -4vw;
 }
 
-#adversary .hp {
-  align-self: flex-end;
-}
-
-#user .hp {
-  align-self: flex-start;
+.info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .messages {

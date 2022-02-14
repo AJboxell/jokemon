@@ -3,10 +3,14 @@
     <div class="pokemon" id="adversary">
       <div class="name"><%= @battle.adversary.name %></div>
       <%= image_tag ("avatars/#{@battle.adversary.name}.png"), data: { animation_target: "opponent" }  %>
-      <%= render "status", pokemon: @battle.adversary %><%= render "hitpoints", pokemon: @battle.adversary %>
+      <div class="info">
+        <%= render "status", pokemon: @battle.adversary %><%= render "hitpoints", pokemon: @battle.adversary %>
+      </div>
     </div>
     <div class="pokemon" id="user">
-      <%= render "hitpoints", pokemon: @battle.user %><%= render "status", pokemon: @battle.user %>
+      <div class="info">
+        <%= render "hitpoints", pokemon: @battle.user %><%= render "status", pokemon: @battle.user %>
+      </div>
       <%= image_tag ("avatars/#{@battle.user.name}.png"), data: { animation_target: "avatar" } %>
       <div class="name"><%= @battle.user.name %></div>
     </div>
