@@ -15,6 +15,8 @@
       <div class="name"><%= @battle.user.name %></div>
     </div>
 
+    <%= render "message" %>
+
     <div class="actions">
       <% @battle.user.moves.each do |move| %>
         <ul>
@@ -22,13 +24,11 @@
         </ul>
       <% end %>
     </div>
-
-    <%= render "message" %>
+  <% end %>
 
     <% if @accurate %>
       <div class="animation invisible" data-animation-target="star">
         <%= image_tag ("animations/star.svg.png") %>
       </div>
     <% end %>
-  <% end %>
 </div>

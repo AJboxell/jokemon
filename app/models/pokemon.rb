@@ -7,6 +7,6 @@ class Pokemon < ApplicationRecord
   end
 
   def restore_health
-    self.update!(hp: max_hp)
+    self.update!(hp: max_hp, status: nil)
   end
 end
