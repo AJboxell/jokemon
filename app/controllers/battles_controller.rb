@@ -57,6 +57,9 @@ class BattlesController < ApplicationController
   end
 
   def status_checks
+    @attacker.hp -= 1 if @attacker.status == "poison"
+    @attacker.save
+    @battle.update!(message: "#{@attacker.name} was hurt by the poison!")
   end
 
   def find_battle
