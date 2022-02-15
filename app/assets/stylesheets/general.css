@@ -26,3 +26,10 @@ h1 {
   font-size: 32px;
   font-family: "Sabo-Regular";
 }
+
+.btn-link {
+  font-family: "Sabo-Regular";
+  font-size: 32px;
+  border: none;
+  margin: 4vh auto;
+}

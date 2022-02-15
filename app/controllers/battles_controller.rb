@@ -1,5 +1,5 @@
 class BattlesController < ApplicationController
-  before_action :find_battle, only: [:show, :attack, :accurate?, :find_move, :battle_over]
+  before_action :find_battle, except: :create
   before_action :find_move, only: [:attack, :accurate?]
 
   def create
@@ -21,6 +21,7 @@ class BattlesController < ApplicationController
       @defender.save
       @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     else
+      sleep 1
       @battle.update!(message: "#{@attacker.name} missed!")
     end
     status_checks
@@ -28,17 +29,25 @@ class BattlesController < ApplicationController
   end
 
   def battle_over?
-    if @defender.fainted? || @attacker.fainted?
-      @winner = @defender.fainted? ? @attacker : @defender
-      message = @defender.fainted? ? "#{@defender.name} has fainted, you win!" : "Ouch, you lose..."
+    if @defender.fainted?
+      if @defender == @adversary
+        @winner, @loser, message = @user, @adversary, "#{@adversary.name} has fainted, you win!"
+      else
+        @winner, @loser, message = @adversary, @user, "Ouch, you lose..."
+      end
+      @loser.hp = 0
       @battle.update!(message: message)
-      @battle.destroy
       render 'battle_over'
-      @adversary.restore_health
-      @user.restore_health
     else
       redirect_to battle_path(@battle)
     end
+  end
+
+  def destroy
+    @battle.destroy
+    @adversary.restore_health
+    @user.restore_health
+    redirect_to pokemons_path
   end
 
   private
