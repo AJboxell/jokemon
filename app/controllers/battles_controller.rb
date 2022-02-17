@@ -15,17 +15,21 @@ class BattlesController < ApplicationController
 
   def attack
     @battle.turn += 1
+    status_checks
+    @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     if accurate?
       @defender.hp -= @attacker.attack * @move.power
-      @defender.status = @move.status unless @move.status.nil?
+      if @move.status?
+        @defender.status = @move.status
+        @battle.update!(result: "#{@defender.name} was #{@move.status}ed!")
+      else
+        @battle.update!(result: "")
+      end
       @defender.save
-      @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     else
-      sleep 1
-      @battle.update!(message: "#{@attacker.name} missed!")
+      @battle.update!(result: "#{@attacker.name} missed!")
     end
-    status_checks
-    battle_over?
+    redirect_to battle_path(@battle) unless battle_over?
   end
 
   def battle_over?
@@ -38,8 +42,6 @@ class BattlesController < ApplicationController
       @loser.hp = 0
       @battle.update!(message: message)
       render 'battle_over'
-    else
-      redirect_to battle_path(@battle)
     end
   end
 
@@ -57,9 +59,11 @@ class BattlesController < ApplicationController
   end
 
   def status_checks
-    @attacker.hp -= 1 if @attacker.status == "poison"
-    @attacker.save
-    @battle.update!(message: "#{@attacker.name} was hurt by the poison!")
+    if @attacker.status == "poison"
+      @attacker.hp -= 1
+      @attacker.save
+      @battle.update!(message: "#{@attacker.name} was hurt by the poison!")
+    end
   end
 
   def find_battle
