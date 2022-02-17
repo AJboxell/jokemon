@@ -1,6 +1,6 @@
 class BattlesController < ApplicationController
   before_action :find_battle, except: :create
-  before_action :find_move, only: [:attack, :accurate?]
+  before_action :find_move, only: [:attack, :accurate?, :power, :elements]
 
   def create
     @battle = Battle.new(battle_params)
@@ -18,10 +18,14 @@ class BattlesController < ApplicationController
     status_checks
     @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     if accurate?
-      @defender.hp -= @attacker.attack * @move.power
+      @defender.hp -= power
       if @move.status?
         @defender.status = @move.status
         @battle.update!(result: "#{@defender.name} was #{@move.status}ed!")
+      elsif elements == 2
+        @battle.update!(result: "It was super effective!")
+      elsif elements == 0.5
+        @battle.update!(result: "It wasn't very effective...")
       else
         @battle.update!(result: "")
       end
@@ -56,6 +60,29 @@ class BattlesController < ApplicationController
 
   def accurate?
     rand(1..100) < (100 - (@defender.evasion ** 2))
+  end
+
+  def power
+    @attacker.attack * @move.power * elements
+  end
+
+  def elements
+    elements = {
+      "fire" => { strong: ["grass", "ice"], weak: ["water", "ground", "rock"] },
+      "water" => { strong: ["fire", "ground"], weak: ["grass"] },
+      "grass" => { strong: ["water", "rock"], weak: ["fire"] }
+    }
+    if elements.has_key?(@move.element)
+      if elements[@move.element][:strong].include?(@defender.element)
+        return 2
+      elsif elements[@move.element][:weak].include?(@defender.element)
+        return 0.5
+      else
+        return 1
+      end
+    else
+      return 1
+    end
   end
 
   def status_checks
