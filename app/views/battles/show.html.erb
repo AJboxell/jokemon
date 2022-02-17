@@ -24,6 +24,12 @@
         </ul>
       <% end %>
     </div>
+
+    <% if @battle.result? %>%
+      <div class="notice">
+        <p><%= "#{@battle.result}" %></p>
+      </div>
+    <% end %>
   <% end %>
 
     <% if @accurate %>
