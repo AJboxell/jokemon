@@ -59,7 +59,7 @@ class BattlesController < ApplicationController
   private
 
   def accurate?
-    rand(1..100) < (100 - (@defender.evasion ** 2))
+    rand(1..100) < (100 - (@defender.evasion ** 2 / 2) * (@move.accuracy / 4))
   end
 
   def power
