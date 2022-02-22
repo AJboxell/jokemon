@@ -3,6 +3,7 @@ puts "Clearing old data..."
 Battle.destroy_all
 Pokemon.destroy_all
 Move.destroy_all
+Status.destroy_all
 
 moves = [
   { name: "Tackle", element: "", power: 2, accuracy: 3, status: "", special: "" },
@@ -47,6 +48,17 @@ seeds.each do |pok|
   pokemon.save!
   pok[:moves].each { |move| pokemon.moves << Move.find_by(name: move) }
   puts "#{pokemon.name} created"
+end
+
+statuses = [
+  { name: "poison", cumulative: false, message: "was poisoned!" }
+]
+
+puts "Adding statuses..."
+
+statuses.each do |stat|
+  status = Status.new(name: stat[:name], cumulative: stat[:cumulative], message: stat[:message])
+  status.save!
 end
 
 puts "Finished!"
