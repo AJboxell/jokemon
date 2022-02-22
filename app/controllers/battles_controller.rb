@@ -20,8 +20,8 @@ class BattlesController < ApplicationController
     if accurate?
       @defender.hp -= power
       if @move.status?
-        @defender.status = @move.status
-        @battle.update!(result: "#{@defender.name} was #{@move.status}ed!")
+        @defender.statuses << @move.status
+        @battle.update!(result: "#{@defender.name} was #{@move.status}ed!") if @defender.status == "poison"
       elsif elements == 2
         @battle.update!(result: "It was super effective!")
       elsif elements == 0.5
@@ -89,7 +89,7 @@ class BattlesController < ApplicationController
     if @attacker.status == "poison"
       @attacker.hp -= 1
       @attacker.save
-      @battle.update!(message: "#{@attacker.name} was hurt by the poison!")
+      @battle.update!(result: "#{@attacker.name} was hurt by the poison!")
     end
   end
 
