@@ -1,12 +1,16 @@
 class BattlesController < ApplicationController
   before_action :find_battle, except: :create
-  before_action :find_move, only: [:attack, :accurate?, :power, :elements]
+  before_action :find_move, only: [:attack, :accurate?, :power, :elements, :add_status]
 
   def create
     @battle = Battle.new(battle_params)
     @battle.turn = 0
     @battle.user = Pokemon.find_by(name: params[:battle][:user])
     @battle.adversary = Pokemon.find_by(name: params[:battle][:adversary])
+    @battle.user.status = []
+    @battle.user.save
+    @battle.adversary.status = []
+    @battle.adversary.save
     @battle.save
     redirect_to battle_path(@battle)
   end
@@ -15,13 +19,12 @@ class BattlesController < ApplicationController
 
   def attack
     @battle.turn += 1
-    status_checks
+    status_checks if @attacker.status?
     @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     if accurate?
       @defender.hp -= power
       if @move.status?
-        @defender.statuses << @move.status
-        @battle.update!(result: "#{@defender.name} was #{@move.status}ed!") if @defender.status == "poison"
+        add_status
       elsif elements == 2
         @battle.update!(result: "It was super effective!")
       elsif elements == 0.5
@@ -85,8 +88,24 @@ class BattlesController < ApplicationController
     end
   end
 
+  def add_status
+    cumulative = ["defence-", "defence--", "attack-", "accuracy-"]
+    if cumulative.include?(@move.status)
+      @defender.status << @move.status
+      message = "#{@defender.name}'s #{@move.status.gsub("-", "")} fell"
+    else
+      if @defender.status.include?(@move.status)
+        message = "It had no effect!"
+      else
+        @defender.status << @move.status
+        message = "#{@defender.name} was #{@move.status}ed!"
+      end
+    end
+    @battle.update!(result: message)
+  end
+
   def status_checks
-    if @attacker.status == "poison"
+    if @attacker.status.include?("poison")
       @attacker.hp -= 1
       @attacker.save
       @battle.update!(result: "#{@attacker.name} was hurt by the poison!")
