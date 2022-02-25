@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_22_103332) do
+ActiveRecord::Schema.define(version: 2022_02_21_204515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,26 +47,13 @@ ActiveRecord::Schema.define(version: 2022_02_22_103332) do
     t.string "name"
     t.integer "hp"
     t.integer "attack"
+    t.string "status", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "max_hp"
     t.integer "evasion"
-    t.string "status"
     t.string "element"
     t.integer "sp_attack"
-  end
-
-  create_table "pokemons_statuses", id: false, force: :cascade do |t|
-    t.bigint "pokemon_id", null: false
-    t.bigint "status_id", null: false
-  end
-
-  create_table "statuses", force: :cascade do |t|
-    t.string "name"
-    t.boolean "cumulative"
-    t.string "message"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "battles", "pokemons", column: "adversary_id"

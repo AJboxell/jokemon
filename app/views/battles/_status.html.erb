@@ -1,6 +1,8 @@
     <div class="status">
       <% statuses = { "poison"=> "PSN", "sleep"=> "SLP", "burn"=> "BRN", "freeze"=> "FRZ", "paralyze"=> "PAR", "confuse"=> "CON" } %>
-      <% if statuses.has_key?(pokemon.status) %>
-        <%= "#{statuses[pokemon.status]}" %>
+      <% if pokemon.status? %>
+        <% if pokemon.status.include?("poison") %>
+          <%= "#{statuses["poison"]}" %>
+        <% end %>
       <% end %>
     </div>
