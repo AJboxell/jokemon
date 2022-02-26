@@ -19,7 +19,7 @@ class BattlesController < ApplicationController
 
   def attack
     @battle.turn += 1
-    status_checks if @attacker.status?
+    status_checks
     @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     if accurate?
       @defender.hp -= power
@@ -62,11 +62,12 @@ class BattlesController < ApplicationController
   private
 
   def accurate?
-    rand(1..100) < (100 - (@defender.evasion ** 2 / 2) * (@move.accuracy / 4))
+    @blindness = @attacker.status.count("accuracy-")
+    rand(1..100) < (100 - (@defender.evasion ** 2 / 2) * (@move.accuracy / 4) * (0.9 ** @blindness))
   end
 
   def power
-    @attacker.attack * @move.power * elements
+    @attacker.attack * @move.power * elements * (0.9 ** @attack) * (1.1 ** @defence)
   end
 
   def elements
@@ -91,8 +92,12 @@ class BattlesController < ApplicationController
   def add_status
     cumulative = ["defence-", "defence--", "attack-", "accuracy-"]
     if cumulative.include?(@move.status)
-      @defender.status << @move.status
-      message = "#{@defender.name}'s #{@move.status.gsub("-", "")} fell"
+      if (@move.status == "attack" && @attack > 10) || (@move.status == "accuracy" && @blindness > 10) || (@move.status.include?("defence") && @defence > 10)
+        message = "It had no effect!"
+      else
+        @defender.status << @move.status
+        message = "#{@defender.name}'s #{@move.status.gsub("-", "")} fell"
+      end
     else
       if @defender.status.include?(@move.status)
         message = "It had no effect!"
@@ -105,6 +110,8 @@ class BattlesController < ApplicationController
   end
 
   def status_checks
+    @attack = @attacker.status.count("attack-")
+    @defence = @defender.status.count("defence-") + @defender.status.count("defence--") * 2
     if @attacker.status.include?("poison")
       @attacker.hp -= 1
       @attacker.save
