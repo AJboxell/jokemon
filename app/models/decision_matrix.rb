@@ -1,0 +1,2 @@
+class DecisionMatrix < ApplicationRecord
+end

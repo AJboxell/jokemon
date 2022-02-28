@@ -7,11 +7,15 @@ class BattlesController < ApplicationController
     @battle.turn = 0
     @battle.user = Pokemon.find_by(name: params[:battle][:user])
     @battle.adversary = Pokemon.find_by(name: params[:battle][:adversary])
-    @battle.user.status = []
-    @battle.user.save
-    @battle.adversary.status = []
-    @battle.adversary.save
+    @battle.user.update!(status: [])
+    @battle.adversary.update!(status: [])
     @battle.save
+    @decision_matrix = {
+      "1" => { name: @battle.adversary.moves[0], uses: 0, misses: 0, weighting: 25 },
+      "2" => { name: @battle.adversary.moves[1], uses: 0, misses: 0, weighting: 25 },
+      "3" => { name: @battle.adversary.moves[2], uses: 0, misses: 0, weighting: 25 },
+      "4" => { name: @battle.adversary.moves[3], uses: 0, misses: 0, weighting: 25 }
+    }
     redirect_to battle_path(@battle)
   end
 
@@ -89,6 +93,23 @@ class BattlesController < ApplicationController
     end
   end
 
+  def move_selection
+    sum = 0
+    @decision_matrix.each do |k, v|
+      sum += v[:weighting]
+    end
+    roll = rand(1..sum)
+    if roll <= decision_matrix["1"][:weighting]
+      @move = @battle.adversary.moves[0]
+    elsif roll > decision_matrix["1"][:weighting] && roll <= decision_matrix["2"][:weighting]
+      @move = @battle.adversary.moves[1]
+    elsif roll > decision_matrix["2"][:weighting] && roll <= decision_matrix["3"][:weighting]
+      @move = @battle.adversary.moves[2]
+    else
+      @move = @battle.adversary.moves[3]
+    end
+  end
+
   def add_status
     cumulative = ["defence-", "defence--", "attack-", "accuracy-"]
     if cumulative.include?(@move.status)
@@ -121,14 +142,12 @@ class BattlesController < ApplicationController
 
   def find_battle
     @battle = Battle.find(params[:id])
-    @user = @battle.user
-    @adversary = @battle.adversary
+    @user, @adversary = @battle.user, @battle.adversary
   end
 
   def find_move
-    @attacker = Pokemon.find(params[:attacker])
-    @defender = Pokemon.find(params[:defender])
-    @move = Move.find(params[:move].to_i)
+    @attacker, @defender = Pokemon.find(params[:attacker]), Pokemon.find(params[:defender])
+    @attacker == @adversary ? move_selection : @move = Move.find(params[:move].to_i)
   end
 
   def battle_params
