@@ -11,11 +11,11 @@ class DecisionMatrix < ApplicationRecord
 
   def select
     roll = rand(1..self.total)
-    if roll <= self.two[:weighting]
+    if roll <= self.one[:weighting]
       @move = Move.find_by(name: self.one[:name])
-    elsif roll > self.two[:weighting] && roll <= self.three[:weighting]
+    elsif roll > self.one[:weighting] && roll <= (self.one[:weighting] + self.two[:weighting])
       @move = Move.find_by(name: self.two[:name])
-    elsif roll > self.three[:weighting] && roll <= self.four[:weighting]
+    elsif roll > (self.one[:weighting] + self.two[:weighting]) && roll <= (self.one[:weighting] + self.two[:weighting] + self.three[:weighting])
       @move = Move.find_by(name: self.three[:name])
     else
       @move = Move.find_by(name: self.four[:name])
