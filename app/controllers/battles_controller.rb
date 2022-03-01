@@ -10,16 +10,19 @@ class BattlesController < ApplicationController
     @battle.user.update!(status: [])
     @battle.adversary.update!(status: [])
     @battle.save
-    @decision_matrix = {
-      "1" => { name: @battle.adversary.moves[0], uses: 0, misses: 0, weighting: 25 },
-      "2" => { name: @battle.adversary.moves[1], uses: 0, misses: 0, weighting: 25 },
-      "3" => { name: @battle.adversary.moves[2], uses: 0, misses: 0, weighting: 25 },
-      "4" => { name: @battle.adversary.moves[3], uses: 0, misses: 0, weighting: 25 }
-    }
+    @decision_matrix = DecisionMatrix.new(
+      one: { name: @battle.adversary.moves[0].name, uses: 0, misses: 0, weighting: 25 },
+      two: { name: @battle.adversary.moves[1].name, uses: 0, misses: 0, weighting: 25 },
+      three: { name: @battle.adversary.moves[2].name, uses: 0, misses: 0, weighting: 25 },
+      four: { name: @battle.adversary.moves[3].name, uses: 0, misses: 0, weighting: 25 }
+    )
+    @decision_matrix.save!
     redirect_to battle_path(@battle)
   end
 
-  def show; end
+  def show
+    @decision_matrix = DecisionMatrix.last
+  end
 
   def attack
     @battle.turn += 1
@@ -93,23 +96,6 @@ class BattlesController < ApplicationController
     end
   end
 
-  def move_selection
-    sum = 0
-    @decision_matrix.each do |k, v|
-      sum += v[:weighting]
-    end
-    roll = rand(1..sum)
-    if roll <= decision_matrix["1"][:weighting]
-      @move = @battle.adversary.moves[0]
-    elsif roll > decision_matrix["1"][:weighting] && roll <= decision_matrix["2"][:weighting]
-      @move = @battle.adversary.moves[1]
-    elsif roll > decision_matrix["2"][:weighting] && roll <= decision_matrix["3"][:weighting]
-      @move = @battle.adversary.moves[2]
-    else
-      @move = @battle.adversary.moves[3]
-    end
-  end
-
   def add_status
     cumulative = ["defence-", "defence--", "attack-", "accuracy-"]
     if cumulative.include?(@move.status)
@@ -143,11 +129,12 @@ class BattlesController < ApplicationController
   def find_battle
     @battle = Battle.find(params[:id])
     @user, @adversary = @battle.user, @battle.adversary
+    @decision_matrix = DecisionMatrix.last
   end
 
   def find_move
     @attacker, @defender = Pokemon.find(params[:attacker]), Pokemon.find(params[:defender])
-    @attacker == @adversary ? move_selection : @move = Move.find(params[:move].to_i)
+    @move = @attacker == @adversary ? @decision_matrix.select : Move.find(params[:move].to_i)
   end
 
   def battle_params
