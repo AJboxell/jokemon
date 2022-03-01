@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_204515) do
+ActiveRecord::Schema.define(version: 2022_02_28_204056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 2022_02_21_204515) do
     t.string "result"
     t.index ["adversary_id"], name: "index_battles_on_adversary_id"
     t.index ["user_id"], name: "index_battles_on_user_id"
+  end
+
+  create_table "decision_matrices", force: :cascade do |t|
+    t.string "one"
+    t.string "two"
+    t.string "three"
+    t.string "four"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "moves", force: :cascade do |t|

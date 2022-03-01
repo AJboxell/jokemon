@@ -7,15 +7,22 @@ class BattlesController < ApplicationController
     @battle.turn = 0
     @battle.user = Pokemon.find_by(name: params[:battle][:user])
     @battle.adversary = Pokemon.find_by(name: params[:battle][:adversary])
-    @battle.user.status = []
-    @battle.user.save
-    @battle.adversary.status = []
-    @battle.adversary.save
+    @battle.user.update!(status: [])
+    @battle.adversary.update!(status: [])
     @battle.save
+    @decision_matrix = DecisionMatrix.new(
+      one: { name: @battle.adversary.moves[0].name, uses: 0, misses: 0, weighting: 25 },
+      two: { name: @battle.adversary.moves[1].name, uses: 0, misses: 0, weighting: 25 },
+      three: { name: @battle.adversary.moves[2].name, uses: 0, misses: 0, weighting: 25 },
+      four: { name: @battle.adversary.moves[3].name, uses: 0, misses: 0, weighting: 25 }
+    )
+    @decision_matrix.save!
     redirect_to battle_path(@battle)
   end
 
-  def show; end
+  def show
+    @decision_matrix = DecisionMatrix.last
+  end
 
   def attack
     @battle.turn += 1
@@ -121,14 +128,13 @@ class BattlesController < ApplicationController
 
   def find_battle
     @battle = Battle.find(params[:id])
-    @user = @battle.user
-    @adversary = @battle.adversary
+    @user, @adversary = @battle.user, @battle.adversary
+    @decision_matrix = DecisionMatrix.last
   end
 
   def find_move
-    @attacker = Pokemon.find(params[:attacker])
-    @defender = Pokemon.find(params[:defender])
-    @move = Move.find(params[:move].to_i)
+    @attacker, @defender = Pokemon.find(params[:attacker]), Pokemon.find(params[:defender])
+    @move = @attacker == @adversary ? @decision_matrix.select : Move.find(params[:move].to_i)
   end
 
   def battle_params
