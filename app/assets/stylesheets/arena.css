@@ -104,6 +104,11 @@ a, a:visited {
   text-align: left;
 }
 
+.matrix {
+  position: fixed;
+  bottom: 12px;
+}
+
 ul {
   list-style-type: none;
   margin-left: 0;

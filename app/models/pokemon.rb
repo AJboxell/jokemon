@@ -1,6 +1,7 @@
 class Pokemon < ApplicationRecord
   has_many :battles
   has_and_belongs_to_many :moves
+  has_many :decision_matrices
 
   def fainted?
     hp < 1

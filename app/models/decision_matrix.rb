@@ -1,5 +1,7 @@
 class DecisionMatrix < ApplicationRecord
-  # belongs_to :battle
+  belongs_to :pokemon
+  has_and_belongs_to_many :moves
+
   serialize :one, Hash
   serialize :two, Hash
   serialize :three, Hash
@@ -10,7 +12,7 @@ class DecisionMatrix < ApplicationRecord
   end
 
   def select
-      roll = rand(1..self.total)
+    roll = rand(1..self.total)
     if roll <= self.one[:weighting]
       @move = Move.find_by(name: self.one[:name])
     elsif roll > self.one[:weighting] && roll <= (self.one[:weighting] + self.two[:weighting])
@@ -21,5 +23,9 @@ class DecisionMatrix < ApplicationRecord
       @move = Move.find_by(name: self.four[:name])
     end
     @move
+  end
+
+  def update(move, accurate, effective)
+
   end
 end

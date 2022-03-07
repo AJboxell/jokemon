@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_28_204056) do
+ActiveRecord::Schema.define(version: 2022_03_06_102726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,11 @@ ActiveRecord::Schema.define(version: 2022_02_28_204056) do
     t.string "four"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "decision_matrices_moves", id: false, force: :cascade do |t|
+    t.bigint "move_id", null: false
+    t.bigint "decision_matrix_id", null: false
   end
 
   create_table "moves", force: :cascade do |t|

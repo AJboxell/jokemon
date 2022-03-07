@@ -25,6 +25,13 @@
       <% end %>
     </div>
 
+    <div class="matrix">
+      <%= @decision_matrix.one %>
+      <%= @decision_matrix.two %>
+      <%= @decision_matrix.three %>
+      <%= @decision_matrix.four %>
+    </div>
+
     <% if @battle.result? %>%
       <div class="notice">
         <p><%= "#{@battle.result}" %></p>

@@ -16,6 +16,7 @@ class BattlesController < ApplicationController
       three: { name: @battle.adversary.moves[2].name, uses: 0, misses: 0, weighting: 25 },
       four: { name: @battle.adversary.moves[3].name, uses: 0, misses: 0, weighting: 25 }
     )
+    @decision_matrix.pokemon = @battle.adversary
     @decision_matrix.save!
     redirect_to battle_path(@battle)
   end
@@ -43,6 +44,7 @@ class BattlesController < ApplicationController
     else
       @battle.update!(result: "#{@attacker.name} missed!")
     end
+    @decision_matrix.update
     redirect_to battle_path(@battle) unless battle_over?
   end
 
