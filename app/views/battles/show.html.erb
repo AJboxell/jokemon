@@ -12,7 +12,7 @@
         <%= render "hitpoints", pokemon: @battle.user %><%= render "status", pokemon: @battle.user %>
       </div>
       <%= image_tag ("avatars/#{@battle.user.name}.png"), data: { animation_target: "avatar" } %>
-      <div class="name"><%= @battle.user.name %><%= @decision_matrix.total %></div>
+      <div class="name"><%= @battle.user.name %></div>
     </div>
 
     <%= render "message" %>

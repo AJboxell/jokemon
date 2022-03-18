@@ -26,6 +26,10 @@ class DecisionMatrix < ApplicationRecord
   end
 
   def update(move, accurate, effective)
-
+    arr = [self.one, self.two, self.three, self.four]
+    local_move = arr.find { |num| num[:name] == move.name }
+    local_move[:uses] += 1
+    local_move[:misses] += 1 unless accurate
+    self.save!
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_06_102726) do
+ActiveRecord::Schema.define(version: 2022_03_18_102618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 2022_03_06_102726) do
     t.string "four"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "pokemon_id"
+    t.index ["pokemon_id"], name: "index_decision_matrices_on_pokemon_id"
   end
 
   create_table "decision_matrices_moves", id: false, force: :cascade do |t|
@@ -72,4 +74,5 @@ ActiveRecord::Schema.define(version: 2022_03_06_102726) do
 
   add_foreign_key "battles", "pokemons", column: "adversary_id"
   add_foreign_key "battles", "pokemons", column: "user_id"
+  add_foreign_key "decision_matrices", "pokemons"
 end
