@@ -28,8 +28,9 @@ class BattlesController < ApplicationController
   def attack
     @battle.turn += 1
     status_checks
-    @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
-    if accurate?
+    hit = accurate?
+    @battle.update!(message: "#{@attacker.name} used #{@move.name}! #{((100 - (@defender.evasion ** 2 / 2.5)) * (@move.accuracy / 3.5) * (0.9 ** @blindness))}")
+    if hit
       @defender.hp -= power
       if @move.status?
         add_status
@@ -44,7 +45,7 @@ class BattlesController < ApplicationController
     else
       @battle.update!(result: "#{@attacker.name} missed!")
     end
-    @decision_matrix.update
+    @decision_matrix.update(@move, hit, elements) if @attacker == @battle.adversary
     redirect_to battle_path(@battle) unless battle_over?
   end
 
@@ -71,8 +72,7 @@ class BattlesController < ApplicationController
   private
 
   def accurate?
-    @blindness = @attacker.status.count("accuracy-")
-    rand(1..100) < (100 - (@defender.evasion ** 2 / 2) * (@move.accuracy / 4) * (0.9 ** @blindness))
+    rand(1..100) < ((100 - (@defender.evasion ** 2 / 2.0)) * (@move.accuracy / 3.5) * (0.9 ** @blindness))
   end
 
   def power
@@ -100,8 +100,9 @@ class BattlesController < ApplicationController
 
   def add_status
     cumulative = ["defence-", "defence--", "attack-", "accuracy-"]
+    @defender_blindness = @defender.status.count("accuracy-")
     if cumulative.include?(@move.status)
-      if (@move.status == "attack" && @attack > 10) || (@move.status == "accuracy" && @blindness > 10) || (@move.status.include?("defence") && @defence > 10)
+      if (@move.status == "attack-" && @attack > 10) || (@move.status == "accuracy-" && @defender_blindness > 10) || (@move.status.include?("defence") && @defence > 10)
         message = "It had no effect!"
       else
         @defender.status << @move.status
@@ -121,6 +122,7 @@ class BattlesController < ApplicationController
   def status_checks
     @attack = @attacker.status.count("attack-")
     @defence = @defender.status.count("defence-") + @defender.status.count("defence--") * 2
+    @blindness = @attacker.status.count("accuracy-")
     if @attacker.status.include?("poison")
       @attacker.hp -= 1
       @attacker.save
