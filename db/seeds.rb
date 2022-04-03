@@ -1,5 +1,6 @@
 puts "Clearing old data..."
 
+DecisionMatrix.destroy_all
 Battle.destroy_all
 Pokemon.destroy_all
 Move.destroy_all
