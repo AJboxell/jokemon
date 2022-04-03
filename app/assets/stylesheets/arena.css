@@ -20,7 +20,6 @@ a, a:visited {
 }
 
 .arena {
-  /* border: 1px solid black; */
   width: 70vw;
   height: 70vh;
   margin: auto;
@@ -113,4 +112,63 @@ ul {
   list-style-type: none;
   margin-left: 0;
   text-align: left;
+}
+
+@media(max-width: 768px) {
+
+  .pokemon {
+    font-size: 28px;
+    padding: 8px 16px;
+  }
+
+  .pokemon img {
+    width: 40vw;
+    padding: 0px;
+  }
+
+  #user {
+    bottom: 12vw;
+    right: -4vw;
+  }
+
+  #adversary {
+    top: 12vw;
+    left: -4vw;
+  }
+
+  .messages {
+      top: 0;
+      left: -4vw;
+      border: 4px gray solid;
+      padding: 8px;
+      font-size: 12px;
+      justify-content: left;
+      text-align: left;
+      width: 80vw;
+  }
+
+.notice {
+    position: absolute;
+    bottom: 28vh;
+    padding: 8px;
+    font-size: 10px;
+    justify-content: center;
+    text-align: left;
+}
+
+  .notice p {
+    font-size: 20px;
+  }
+
+  .actions {
+      width: 56vw;
+      bottom: -72vh;
+      height: 20vh;
+      font-size: 16px;
+      padding-top: 8px;
+  }
+
+  .matrix {
+    display: none;
+  }
 }

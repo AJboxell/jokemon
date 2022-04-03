@@ -7,9 +7,9 @@ export default class extends Controller {
     this.optionTarget.classList.toggle("pressed");
     // const user = this.optionTarget.innerText;
     const selections = document.querySelectorAll(".pressed");
-    console.log(selections[0].innerText);
-    const user = selections[0].innerText;
-    const adversary = selections[1].innerText;
+    console.log(selections[0].querySelector(".poke-info").innerHTML);
+    const user = selections[0].querySelector(".poke-info").innerHTML;
+    const adversary = selections[1].querySelector(".poke-info").innerHTML;
     document.getElementById("battle_user").value = user;
     document.getElementById("battle_adversary").value = adversary;
   }
