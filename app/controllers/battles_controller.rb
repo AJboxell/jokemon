@@ -99,14 +99,14 @@ class BattlesController < ApplicationController
   end
 
   def add_status
-    cumulative = ["defence-", "defence--", "attack-", "accuracy-"]
+    cumulative = ["defence-", "defence<", "attack-", "accuracy-"]
     @defender_blindness = @defender.status.count("accuracy-")
     if cumulative.include?(@move.status)
       if (@move.status == "attack-" && @attack > 10) || (@move.status == "accuracy-" && @defender_blindness > 10) || (@move.status.include?("defence") && @defence > 10)
         message = "It had no effect!"
       else
         @defender.status << @move.status
-        message = "#{@defender.name}'s #{@move.status.gsub("-", "")} fell"
+        message = "#{@defender.name}'s #{@move.status.gsub(/[-<]/, "")} fell"
       end
     else
       if @defender.status.include?(@move.status)
@@ -121,8 +121,7 @@ class BattlesController < ApplicationController
 
   def status_checks
     @attack = @attacker.status.count("attack-")
-    @defence = @defender.status.count("defence-")
-    #  + @defender.status.count("defence--") * 2
+    @defence = @defender.status.count("defence-") + @defender.status.count("defence<") * 2
     @blindness = @attacker.status.count("accuracy-")
     if @attacker.status.include?("poison")
       @attacker.hp -= 1

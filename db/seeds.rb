@@ -19,7 +19,7 @@ moves = [
   { name: "Sand Attack", element: "", power: 0, accuracy: 2, status: "accuracy-", special: "" },
   { name: "Quick Attack", element: "", power: 1, accuracy: 4, status: "", special: "quick" },
   { name: "Wing Attack", element: "", power: 3, accuracy: 3, status: "", special: "" },
-  { name: "Screech", element: "", power: 0, accuracy: 2, status: "defence--", special: "" },
+  { name: "Screech", element: "", power: 0, accuracy: 2, status: "defence<", special: "" },
   { name: "Sonic Boom", element: "", power: 2, accuracy: 4, status: "", special: "" }
 ]
 
