@@ -29,7 +29,7 @@ class BattlesController < ApplicationController
     @battle.turn += 1
     status_checks
     hit = accurate?
-    @battle.update!(message: "#{@attacker.name} used #{@move.name}! #{((100 - (@defender.evasion ** 2 / 2.5)) * (@move.accuracy / 3.5) * (0.9 ** @blindness))}")
+    @battle.update!(message: "#{@attacker.name} used #{@move.name}!")
     if hit
       @defender.hp -= power
       if @move.status?
