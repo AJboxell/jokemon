@@ -121,7 +121,8 @@ class BattlesController < ApplicationController
 
   def status_checks
     @attack = @attacker.status.count("attack-")
-    @defence = @defender.status.count("defence-") + @defender.status.count("defence--") * 2
+    @defence = @defender.status.count("defence-")
+    #  + @defender.status.count("defence--") * 2
     @blindness = @attacker.status.count("accuracy-")
     if @attacker.status.include?("poison")
       @attacker.hp -= 1
